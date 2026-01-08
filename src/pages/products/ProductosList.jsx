@@ -6,6 +6,8 @@ import FiltrosCatalogos from '../../features/products/components/organisms/Filtr
 import ProductCard from '../../features/products/components/organisms/ProductCard';
 import { useProductsStore } from '../../store/productsStore';
 import Seo from '../../shared/seo/Seo';
+import { Spin } from 'antd';
+
 // import ProductCardWpp from '../components/ProductCardWpp';
 
 
@@ -15,7 +17,6 @@ const Productos = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [marcaSeleccionada, setMarcaSeleccionada] = useState([]);
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState([]);
 
     const [busqueda, setBusqueda] = useState("");
@@ -23,63 +24,78 @@ const Productos = () => {
 
     // Leer de la URL al cargar
     useEffect(() => {
-        const marcasFromURL = searchParams.get("marcas")?.split(",") || [];
         const categoriasFromURL = searchParams.get("categorias")?.split(",") || [];
-        setMarcaSeleccionada(marcasFromURL);
         setCategoriaSeleccionada(categoriasFromURL);
     }, [searchParams]);
 
     // Actualizar la URL cuando cambia el filtro
     useEffect(() => {
         const params = {};
-        if (marcaSeleccionada.length > 0) {
-            params.marcas = marcaSeleccionada.join(",");
-        }
         if (categoriaSeleccionada.length > 0) {
             params.categorias = categoriaSeleccionada.join(",");
         }
         setSearchParams(params);
-    }, [marcaSeleccionada, categoriaSeleccionada, setSearchParams]);
+    }, [categoriaSeleccionada, setSearchParams]);
 
     const productosFiltrados = products.filter(product => {
-        const coincideMarca = marcaSeleccionada.length > 0 ? marcaSeleccionada.includes(product.marcaNombre) : true;
-        const coincideCategoria = categoriaSeleccionada.length > 0 ? categoriaSeleccionada.includes(product.categoriaNombre) : true;
+        const coincideCategoria = categoriaSeleccionada.length > 0 ? categoriaSeleccionada.includes(product.grupo) : true;
         const coincideBusqueda = busqueda
             ? [
                 product.nombre,
                 product.descripcion,
                 product.marcaNombre,
-                product.categoriaNombre
+                product.grupo
             ]
                 .some(campo =>
                     campo?.toLowerCase().includes(busqueda.toLowerCase())
                 )
             : true;
 
-        return coincideMarca && coincideCategoria && coincideBusqueda;
+        return coincideCategoria && coincideBusqueda;
     });
-
     return (
         <>
             <Seo title="Catalogo" description="Catalogo web" />
             <Layout>
-                <div className="p-6 grid grid-cols-8 gap-4">
-                    <FiltrosCatalogos
-                        marcaSeleccionada={marcaSeleccionada}
-                        setMarcaSeleccionada={setMarcaSeleccionada}
-                        categoriaSeleccionada={categoriaSeleccionada}
-                        setCategoriaSeleccionada={setCategoriaSeleccionada}
-                        onSearch={setBusqueda}
-                    />
-                    <div className='col-span-6 grid grid-cols-3 gap-4 '>
-                        {productosFiltrados.map((product) => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
+                <div className="p-4 md:p-6 min-h-screen">
+                    <div className="grid grid-cols-1 md:grid-cols-8 gap-6">
+
+                        {/* FILTROS */}
+                        <div className="md:col-span-2">
+                            <FiltrosCatalogos
+                                categoriaSeleccionada={categoriaSeleccionada}
+                                setCategoriaSeleccionada={setCategoriaSeleccionada}
+                                onSearch={setBusqueda}
+                            />
+                        </div>
+
+                        {/* PRODUCTOS */}
+                        <div
+                            className="
+                    md:col-span-6
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    lg:grid-cols-3
+                    xl:grid-cols-4
+                    gap-4
+                "
+                        >
+                            {productosFiltrados.length > 0 ? (
+                                productosFiltrados.map(product => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))
+                            ) : (
+                                <div className="col-span-full flex justify-center items-center min-h-[50vh]">
+                                    <Spin size="large" />
+                                </div>
+                            )}
+                        </div>
 
                     </div>
-
                 </div>
             </Layout>
+
         </>
     )
 }

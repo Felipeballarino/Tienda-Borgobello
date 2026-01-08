@@ -1,65 +1,88 @@
-import { Link } from 'react-router-dom'
-import foto1 from "../../../../assets/remera.webp"
-import CircleIcon from '@mui/icons-material/Circle';
-import { formatearPrecio } from '../../../../utils/helpers';
+import { formatearPrecio } from '../../../../utils/helpers'
+import { useCartStore } from '../../../../store/cartStore'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import IconButton from "@mui/material/IconButton";
+import { Image } from "antd";
+import imgNoDisp from "../../../../assets/nodisp.jpg"
 
 const ProductCard = ({ product }) => {
+
+    const { addToCart } = useCartStore()
+
+
+    const handleAddToCart = () => {
+        addToCart(product, 1);
+    };
+
     return (
-        <Link to={`/producto/${product.id}`} className='border rounded-lg p-4 shadow-md relative min-h-[300px] h-fit'>
-            {product.porcentajeDescuento !== 0 &&
-                <div className='absolute top-4 left-0 bg-blue-500 text-white font-bold py-1 px-2 rounded-r'>
-                    {product.porcentajeDescuento}% OFF
+        <div
+            className="group bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 relative min-h-[320px]"
+        >
+            {/* DESCUENTO */}
+            {product.descuento && product.descuento !== "0.00" && (
+                <div className="absolute top-4 left-4 bg-gray-900 text-white text-xs font-semibold py-1 px-3 rounded-full z-10">
+                    {product.descuento}% OFF
                 </div>
-            }
-            <img src={foto1} alt={product.nombre} loading="lazy" className='w-full h-48 object-cover' />
-            {product.tipoVariante === 1 &&
-                (
-                    product.stockGeneral !== 0 ?
-                        <div className='py-1 bg-gray-100 w-fit px-1 mt-2 rounded flex'>
-                            <span className='text-[12px]'><strong>{product.stockGeneral}</strong> piezas disponibles</span>
-                        </div>
-                        :
-                        <div className='py-1 bg-gray-100 w-fit px-1 mt-2 rounded flex'>
-                            <span className='text-[12px] font-bold'>Sin Stock</span>
-                        </div>
-                )
-            }
-            {product.tipoVariante === 2 &&
-                <div className='py-1'>
-                    {
-                        product.variantesColor?.map(variant => {
-                            if (variant.color) {
-                                return <CircleIcon sx={{ color: variant.color }} titleAccess={variant.nombreColor} className='border border-black rounded-full' />
-                            }
-                        })
-                    }
-                </div>
-            }
-            {product.tipoVariante === 3 &&
-                <div className='py-1'>
-                    {
-                        product.variantesTalle?.map(variant => {
-                            if (variant.color) {
-                                return <CircleIcon sx={{ color: variant.color }} titleAccess={variant.nombreColor} className='border border-black rounded-full' />
-                            }
-                        })
-                    }
-                </div>
-            }
-            <h3 className='text-lg font-bold'>{product.nombre}</h3>
-            <p className='text-sm text-gray-500'>{product.marcaNombre}</p>
-            {product.viewPrecios &&
-                (product.porcentajeDescuento ?
-                    <div className='flex items-center gap-3'>
-                        <p className='text-gray-500 text-sm line-through'>{formatearPrecio(product.precio)}</p>
-                        <p className='text-gray-500 font-bold'>{formatearPrecio(product.precioDescuento)}</p>
-                    </div>
+            )}
+
+            {/* IMAGEN */}
+            <div className="overflow-hidden rounded-xl">
+                {product.img1 ?
+                    <Image
+                        style={{ objectFit: "cover" }}
+                        width="100%"
+                        height="12rem"
+                        src={product.img1}
+                        alt={product.nombre}
+                    />
                     :
-                    <p className='text-gray-500'>{formatearPrecio(product.precio)}</p>
-                )
-            }
-        </Link>
+                    <Image
+                        style={{ objectFit: "cover" }}
+                        width="100%"
+                        height="12rem"
+                        src={imgNoDisp}
+                        alt={product.nombre}
+                    />
+                }
+            </div>
+
+            {/* INFO */}
+            <div className="mt-4">
+                <h3 className="text-base font-semibold leading-tight line-clamp-2">
+                    {product.descripcion}
+                </h3>
+                <p className='text-xs font-medium   text-gray-400 h-3'>COD: {product.codproducto}</p>
+                <div className="flex justify-between items-center mt-2">
+                    <p className="text-sm text-gray-500 my-1 ">
+                        {product.grupo}
+                    </p>
+                    <p className='text-gray-500'>{formatearPrecio(product.precio_final)}</p>
+
+                </div>
+                <button
+                    onClick={handleAddToCart}
+                    className="
+        mt-4 w-full
+        flex items-center justify-center gap-2
+        rounded-xl
+        bg-[#f09303d4] text-white
+        py-2
+        text-sm font-semibold
+        transition-all duration-300
+        hover:bg-[#d7880dd4] hover:shadow-md
+        active:scale-95
+        cursor-pointer
+    "
+                >
+                    <AddShoppingCartIcon fontSize="small" />
+                    Agregar al carrito
+                </button>
+
+
+
+            </div>
+        </div>
     )
 }
 
-export default ProductCard  
+export default ProductCard
