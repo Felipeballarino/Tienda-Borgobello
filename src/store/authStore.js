@@ -40,7 +40,7 @@ export const useAuthStore = create((set, get) => ({
     // INIT (equivale al useEffect del AuthProvider)
     initAuth: async () => {
         const token = Cookies.get("user_data_token");
-
+        console.log("AAAA")
         if (!token) {
             await get().loginNotUser();
             return;
