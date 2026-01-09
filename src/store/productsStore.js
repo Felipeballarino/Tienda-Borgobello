@@ -10,7 +10,7 @@ export const useProductsStore = create((set, get) => ({
         if (get.products) return;
         try {
             const data = await getProduct()
-            set({ products: data, loading: false })
+            set({ products: data.productos, loading: false })
         } catch (error) {
             console.error("Error al cargar productos:", error);
         } finally {

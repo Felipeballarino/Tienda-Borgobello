@@ -24,7 +24,7 @@ const Login = ({ open, onClose }) => {
         if (user) {
             login(user);
             onClose();
-            navigate('/admin');
+            navigate('/productos');
         } else {
             Swal.fire({
                 icon: "error",

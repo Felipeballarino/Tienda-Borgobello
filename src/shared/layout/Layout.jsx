@@ -5,6 +5,7 @@ import Cart from '../../features/cart/components/Cart'
 import { FloatButton } from 'antd'
 import { WhatsAppOutlined } from '@ant-design/icons'
 import { useCartStore } from '../../store/cartStore'
+import Banner from './Banner'
 
 const Layout = ({ children }) => {
     const { openCart, onCloseCart, showDrawerCart } = useCartStore()
@@ -12,7 +13,8 @@ const Layout = ({ children }) => {
         <div className='flex flex-col min-h-screen'>
             <Cart open={openCart} onClose={onCloseCart} />
             <Header showDrawer={showDrawerCart} />
-            <main className="flex-grow p-4">
+            <Banner />
+            <main className="flex-grow ">
                 {children}
             </main>
             <Footer />

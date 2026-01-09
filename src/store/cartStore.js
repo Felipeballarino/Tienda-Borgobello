@@ -12,17 +12,13 @@ export const useCartStore = create(
                 const prevCart = get().cart;
                 const existing = prevCart.find(
                     (item) =>
-                        item.id === product.id &&
-                        item.color === product.color &&
-                        item.talle === product.talle
+                        item.codproducto === product.codproducto 
                 );
 
                 let updatedCart;
                 if (existing) {
                     updatedCart = prevCart.map((item) =>
-                        item.id === product.id &&
-                            item.color === product.color &&
-                            item.talle === product.talle
+                        item.codproducto === product.codproducto
                             ? { ...item, quantity: item.quantity + quantity }
                             : item
                     );
@@ -35,17 +31,17 @@ export const useCartStore = create(
 
             // Quitar producto
             removeFromCart: (id) => {
-                const updated = get().cart.filter((item) => item.id !== id);
+                const updated = get().cart.filter((item) => item.codproducto !== id);
                 set({ cart: updated, openCart: true });
             },
 
             // Actualizar cantidad
             updateQuantity: (id, quantity) => {
                 const updated = get().cart.map((item) =>
-                    item.id === id
+                    item.codproducto === id
                         ? {
                             ...item,
-                            quantity: Math.min(quantity, item.stock),
+                            quantity: quantity,
                         }
                         : item
                 );
@@ -61,7 +57,7 @@ export const useCartStore = create(
 
             // Getters calculados (derivados)
             cartTotal: () =>
-                get().cart.reduce((acc, item) => acc + item.precio * item.quantity, 0),
+                get().cart.reduce((acc, item) => acc + item.precio_final * item.quantity, 0),
             cartItems: () =>
                 get().cart.reduce((acc, item) => acc + item.quantity, 0),
         }),

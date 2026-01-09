@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Layout from '../../shared/layout/Layout'
 import { useParams } from 'react-router-dom'
-import { getProductByID } from '../../features/products/services/productServices'
 import foto1 from "../../assets/remera.webp"
 import { Divider } from 'antd'
 import SwiperImagenes from '../../features/products/components/molecules/SwiperImagen'
@@ -21,7 +20,7 @@ const ProductoDetalle = () => {
 
     useEffect(() => {
         const fetchProducto = async () => {
-            const data = await getProductByID(id)
+            const data = []
             setProducto(data)
 
             // Setear el primer color como seleccionado por defecto
