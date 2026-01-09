@@ -6,18 +6,18 @@ import CheckoutPage from "./pages/checkout/CheckoutPage";
 
 import 'quill/dist/quill.snow.css'
 import { useEffect } from "react";
-import { useBrandsStore } from "./store/brandsStore";
 import { useCategoriesStore } from "./store/categoriesStore";
 import { useProductsStore } from "./store/productsStore";
+import { useAuthStore } from "./store/authStore";
 
 function App() {
 
-  const { loadBrands } = useBrandsStore()
   const { loadCategories } = useCategoriesStore()
   const { loadProducts } = useProductsStore()
+  const { initAuth } = useAuthStore()
 
   useEffect(() => {
-    loadBrands();
+    initAuth()  
     loadCategories()
     loadProducts()
   }, []);
