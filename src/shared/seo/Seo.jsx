@@ -4,7 +4,7 @@ const Seo = ({ title, description }) => {
 
     return (
         <Helmet>
-            <title>{title} | Template</title>
+            <title>{title} | DEBORGO</title>
             <meta name="description" content={description} />
             <link rel="canonical" href="https://template-one-yirv.vercel.app/" />
         </Helmet>
