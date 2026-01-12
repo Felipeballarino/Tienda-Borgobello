@@ -57,7 +57,6 @@ export const aplicarDescuento = (precio, porcentaje) => {
 
 // Calcular descuento en %
 export const calcularPorcentaje = (precio, precioDescuento) => {
-    console.log(precio, precioDescuento)
     if (!precio || !precioDescuento) return 0
     return Math.round(((precio - precioDescuento) / precio) * 100)
 }
