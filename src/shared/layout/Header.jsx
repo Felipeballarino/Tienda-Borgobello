@@ -126,7 +126,7 @@ const Header = ({ showDrawer }) => {
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
 
-                        {user ?
+                        {user?.codusuario != 0 ?
                             <>
                                 <MenuItem onClick={logout}>
                                     Cerrar Sesion
