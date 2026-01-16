@@ -14,7 +14,7 @@ const Home = () => {
             <Seo title="Home" description="Bienvenido a mi sitio web" />
             <Layout>
                 {/* BANNER */}
-                <div className="h-[50vh] md:h-[80vh] relative overflow-hidden">
+                <div id='top' className="h-[50vh] md:h-[80vh] relative overflow-hidden">
                     {/* Desktop */}
                     <img
                         src={banner}

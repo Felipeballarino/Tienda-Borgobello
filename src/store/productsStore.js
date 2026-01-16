@@ -8,15 +8,23 @@ export const useProductsStore = create((set, get) => ({
     loaded: false,
     loadProducts: async () => {
         if (get.products) return;
+
         try {
-            const data = await getProduct()
-            set({ products: data.productos, loading: false })
+            const data = await getProduct();
+            set({
+                products: data.productos,
+                loading: false,
+                loaded: true
+            });
         } catch (error) {
             console.error("Error al cargar productos:", error);
-        } finally {
-            set({ loading: false })
         }
     },
-    setLoading: (estado) => set({ loading: estado })
+    setLoading: (estado) => set({ loading: estado }),
+    resetProducts: () => set({
+        products: [],
+        loaded: false,
+        loading: true
+    })
 
 }))

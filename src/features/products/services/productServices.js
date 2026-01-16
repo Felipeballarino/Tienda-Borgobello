@@ -8,7 +8,7 @@ export const getProduct = async () => {
         const USER = JSON.parse(Cookies.get('user_data') || '{}');
 
         const codusuario = USER?.codusuario || 0;
-
+        console.log(codusuario)
         const res = await fetch(`${API_URL_PRODUCTOS}/${codusuario}`, {
             method: 'GET',
             headers: {

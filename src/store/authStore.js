@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
 import { loginUserNot, verificarToken } from "../features/auth/services/LoginServices";
+import { useProductsStore } from "./productsStore";
 
 export const useAuthStore = create((set, get) => ({
     user: null,
@@ -12,6 +13,9 @@ export const useAuthStore = create((set, get) => ({
         Cookies.set("user_data", JSON.stringify(data.usuario), { expires: 365 * 5 });
 
         set({ user: data.usuario, loading: false });
+
+        useProductsStore.getState().resetProducts();
+        useProductsStore.getState().loadProducts();
     },
 
     // LOGIN ANÓNIMO

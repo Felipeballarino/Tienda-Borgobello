@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Login from '../../features/auth/components/Login'
 import { useAuthStore } from '../../store/authStore'
 import LocalMallIcon from '@mui/icons-material/LocalMall';
@@ -17,6 +17,7 @@ const StyledListHeader = styled(ListSubheader)({
 });
 
 const Header = ({ showDrawer }) => {
+    const navigate = useNavigate()
     const [modalOpen, setModalOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,6 +35,7 @@ const Header = ({ showDrawer }) => {
     };
 
     const scrollTo = (id) => {
+        navigate("/")
         const element = document.getElementById(id)
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' })
@@ -57,12 +59,12 @@ const Header = ({ showDrawer }) => {
                             </Link>
                         </li>
                         <li>
-                            <button onClick={() => scrollTo('nosotros')}>
+                            <button onClick={() => scrollTo('nosotros')} style={{ cursor: "pointer" }}>
                                 NOSOTROS
                             </button>
                         </li>
                         <li>
-                            <button onClick={() => scrollTo('contacto')}>
+                            <button onClick={() => scrollTo('contacto')} style={{ cursor: "pointer" }}>
                                 CONTACTO
                             </button>
                         </li>
